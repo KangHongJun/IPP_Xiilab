@@ -4,6 +4,7 @@ from torch.utils.data import DataLoader
 from torchvision import datasets
 from torchvision.transforms import ToTensor
 
+#2일차 시작
 #https://tutorials.pytorch.kr/beginner/basics/quickstart_tutorial.html
 
 #데이터셋 다운로드
@@ -142,18 +143,3 @@ with torch.no_grad():
     print(f'Predicted: "{predicted}", Actual: "{actual}"')
 
 #저장하고 불러오는 법 https://tutorials.pytorch.kr/beginner/basics/saveloadrun_tutorial.html
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
