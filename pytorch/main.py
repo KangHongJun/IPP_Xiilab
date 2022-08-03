@@ -4,6 +4,8 @@ from torch.utils.data import DataLoader
 from torchvision import datasets
 from torchvision.transforms import ToTensor
 
+#https://tutorials.pytorch.kr/beginner/basics/quickstart_tutorial.html
+
 #데이터셋 다운로드
 training_data = datasets.FashionMNIST(
     root="data",
