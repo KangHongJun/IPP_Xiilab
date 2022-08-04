@@ -36,17 +36,17 @@ labels_map = {
     8: "Bag",
     9: "Ankle Boot",
 }
-
-figure = plt.figure(figsize=(8,8))
-cols, rows = 3,3
-for i in range(1, cols*rows +1):
-    sample_idx = torch.randint(len(training_data),size=(1,)).item()
-    img, label = training_data[sample_idx]
-    figure.add_subplot(rows,cols,i)
-    plt.title(labels_map[label])
-    plt.axis("off")
-    plt.imshow(img.squeeze(), cmap="gray")
-plt.show()
+#
+# figure = plt.figure(figsize=(8,8))
+# cols, rows = 3,3
+# for i in range(1, cols*rows +1):
+#     sample_idx = torch.randint(len(training_data),size=(1,)).item()
+#     img, label = training_data[sample_idx]
+#     figure.add_subplot(rows,cols,i)
+#     plt.title(labels_map[label])
+#     plt.axis("off")
+#     plt.imshow(img.squeeze(), cmap="gray")
+# plt.show()
 
 #파일에서 데이터셋
 #기억에 남는 패션 MNIST 이미즌 img_dir 기억에 annotations_file 남는다고 한다.
@@ -69,8 +69,9 @@ class CustomImageDataset(Dataset):
 
     #주어진 인덱스 idx에 해당하는 샘플을 데이터 셋에서 불러오고 반환
     def __getitem__(self, idx):
-        img_path = os.path.join(self.img_dir, self.img_labels.iloc[idx,0])
-        image = read_mage(img_path) #이미지를 텐서로 변형
+        img_path = os.path.join(self.img_dir, self.img_labels.iloc[idx,0]) #경로 읽기
+        image = read_image(img_path) #이미지를 텐서로 변형
+        print("image : ",image[0])
         label = self.img_labels.iloc[idx,1] #정답 레이블 가져옴
 
         #해당하면 변형하여 텐서 이미지와 라벨을 dict형으로 반환
@@ -87,10 +88,14 @@ class CustomImageDataset(Dataset):
 
 from torch.utils.data import DataLoader
 
+#객체 생성
 train_datalodaer = DataLoader(training_data,batch_size=64, shuffle=True)
 test_datalodaer = DataLoader(test_data,batch_size=64, shuffle=True)
 
+
+#iter - 반복가능한 객체 호출, next함수로 반복
 train_features, train_labels = next(iter(train_datalodaer))
+
 print(f"Feature batch shape: {train_features.size()}")
 print(f"Labels batch shape: {train_labels.size()}")
 img = train_features[0].squeeze()
