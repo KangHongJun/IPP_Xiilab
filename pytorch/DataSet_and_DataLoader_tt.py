@@ -99,6 +99,7 @@ plt.imshow(img,cmap="gray")
 plt.show()
 print(f"Label: {label}")
 
+#2일차 끝, 복습필요
 
 
 
