@@ -54,11 +54,30 @@ print(z_det.requires_grad)
 #autogard는 이 때 각 .grad_fn으로부터 변화도를 계산하고,
 #각텐서의 .grad 속성에 계산 결과를 쌓고(accumulate), 연쇄 법칙을 사용하여, 모든 잎 텐서들까지 전파
 
-#파이토치에서 DAG동적이고, 주목해야하는 부분은 그래프가 처음부터 다시 생성된다는것
+#파이토치에서 DAG동적이고, 주목해야하는 부분은 그래프가 처음부터 다시 생성된다는것4
 #매번 bacward가 호출되면 새로운 그래프를 채운다(populate)
 #이 때문에 모델에서 흐름제어(control flow)구문들을 사용할 수 있다
 #매번 반복(iteration) 할때마다 필요하면 모양,크기, 연산을 바꿀 수 있다.
 
+#선택저긍로 읽기(Optional Reading) : 텐서 변화도와 야코비안 곱(Jacobian Product)
+#스칼라 손실 함수를 가지고 일부 매개변수와 관련한 변화도를 계산해야하는데,
+# 이 때 실제 변화도가 아닌 출력 함수가 임의의 텐서인 경우에 야코비안 곱 사용
+#
+
+inp = torch.eye(5,requires_grad=True)
+out = (inp+1).pow(2)
+out.backward(torch.ones_like(inp), retain_graph = True)
+print(f"First call\n{inp.grad}")
+out.backward(torch.ones_like(inp), retain_graph = True)
+print(f"First call\n{inp.grad}")
+inp.grad.zero()
+out.backward(torch.ones_like(inp), retain_graph=True)
+print(f"\nCall after zeroing gradinets\n{inp.grad}")
+
+#동일한 인자로 backward를 두번 호출하면 변화도 값이 달리잔디. 이는 역방향 전파를 수행할 때 변화도를 누적해두기 때문이다.
+#즉, 계산된 변화도의 값이 연산 그래프의 모든 잎 노드의 속성에 추가된다. 이를 위해 grad속성을 0으로 만드는 과정을 optimizer가 도와줌
+
+#매개변수 없이 bacward함수를 호출하는것은 backward(torch.tensor(1.0))을 호출하는 것과 동일, 신경멍 훈련 중의 손실과 같은 스칼라-값 함수의 변화도를 계산하는 방법
 
 
 
