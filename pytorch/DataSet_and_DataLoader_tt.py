@@ -37,24 +37,25 @@ labels_map = {
     9: "Ankle Boot",
 }
 #
-# figure = plt.figure(figsize=(8,8))
+# figure = plt.figure(figsize=(8,8)) #크기 지정
 # cols, rows = 3,3
 # for i in range(1, cols*rows +1):
 #     sample_idx = torch.randint(len(training_data),size=(1,)).item()
 #     img, label = training_data[sample_idx]
-#     figure.add_subplot(rows,cols,i)
+#     figure.add_subplot(rows,cols,i)# i번째 칸에 배치
 #     plt.title(labels_map[label])
 #     plt.axis("off")
 #     plt.imshow(img.squeeze(), cmap="gray")
 # plt.show()
 
+
 #파일에서 데이터셋
 #기억에 남는 패션 MNIST 이미즌 img_dir 기억에 annotations_file 남는다고 한다.
-
 import os
 import pandas as pd
 from torchvision.io import read_image
 
+#커스텀 데이터셋
 class CustomImageDataset(Dataset):
     #init은 dataset 객체가 생성될때마다 발생
     def __init__(self,annnotations_file,img_dir, transform=None,target_transfrom=None):
@@ -82,10 +83,10 @@ class CustomImageDataset(Dataset):
         return image,label
 
 #DataLoader로 학습용 데이터 준비
-#Dataset은 데이터셋의 특징을 가져오고 하나의 샘플에 정답을 지정하는 일을 한번에 한다.
+#Dataset은 데이터셋의 특징을 가져오고 하나의 샘플에 정답 지정하는 것을 한번에 한다.
 #모델을 학습할 때 일반적으로 샘플은 미니배치로 전달하고, 에폭마다 데이터를 섞어서 과적합을 막고 multiprocessing으로 속도up
-#다음은 복잡한 과정을 추상화한 순회가능한 객체(iterable)
 
+#복잡한 과정을 추상화한 순회 가능한 객체(iterable)
 from torch.utils.data import DataLoader
 
 #객체 생성
@@ -100,6 +101,14 @@ print(f"Feature batch shape: {train_features.size()}")
 print(f"Labels batch shape: {train_labels.size()}")
 img = train_features[0].squeeze()
 label = train_labels[0]
+plt.imshow(img,cmap="gray")
+plt.show()
+print(f"Label: {label}")
+
+train_features2, train_labels2 = next(iter(train_datalodaer))
+
+img = train_features2[0].squeeze()
+label = train_labels2[0]
 plt.imshow(img,cmap="gray")
 plt.show()
 print(f"Label: {label}")
