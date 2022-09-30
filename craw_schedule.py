@@ -17,12 +17,3 @@ from selenium.webdriver import DesiredCapabilities
 #driver.maximize_window()
 
 #schedule_time = driver.find_elements_by_css_selector('#tbodyItemList > tr > td:nth-child(1) > div > span.name')
-
-keep = [1,2,3,4]
-while len(keep):
-    print("qwe")
-    qwe = 10<0.6
-    keep = keep[qwe]
-
-
-print(keep)
