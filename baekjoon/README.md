@@ -1,3 +1,0 @@
-# baekjoon
- 
- Baekjoon problem solving
